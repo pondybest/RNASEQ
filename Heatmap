@@ -91,14 +91,60 @@ heatmap(a_s, scale = "none", col = bluered(100))
 dev.off()
 
 # heatmap2 ######
-tiff('WTvsMT_heatmap2.tiff', width = 800, height = 800)
-heatmap.2(a_s, scale = "none", col = bluered(100), trace = 'none', density.info = 'none')
+library(gplots)
+# image 
+tiff('WTvsMT_heatmap2.tiff', 
+     width = 6*300, 
+     height = 6*300, 
+     res = 300, 
+     pointsize = 6) # font size
+# main figure
+heatmap.2(
+  a_s_transposed, 
+  scale = "none", 
+  main = "Caco-2 Genes Expression Profile upon Listeria infection",
+  labRow = ,
+  labCol = ,
+  cexRow = 1.0,
+  cexCol = 2.0,
+  xlab = ,
+  ylab = ,
+  lwid = c(2.5,6),
+  lhei = c(1,8),
+  margins = c(8,8),
+  
+  col = bluered(100), 
+  ColSideColors = ,
+  
+  trace = 'none', 
+  density.info = 'histogram',
+  denscol = 'black',
+  dendrogram = 'both',
+  
+  key = T, 
+  key.title = 'Color Key and Histogram',
+  keysize = 4,
+  key.xlab = 'Row Z-score',
+  key.ylab = 'Count',
+  key.par=list(mgp=c(1, 0.5, 0),    #distance of Key Label, Key Scale Value and Key axis toward the key
+               mar=c(0.5, 2.5, 1, 0)
+               ),
+  
+                            )
 dev.off()
 
-# interactive heat maps ######
-tiff('WTvsMT_heatmap2.tiff', width = 800, height = 800)
-d3heatmap(a_s, scale = "none", colors = bluered(100))
-dev.off()
+# Add a legend 
+par(lend = 1)                  # square line ends for the color legend
+legend('topright', 
+       inset=0.001,
+       title = 'Treatments',
+       c("LmF4244", "LmF4244 lap-"), # category labels
+       col = c("black", "grey"),  # color key
+       lty= 1,             # line style
+       lwd = 10            # line width
+)
+
+
 
 
 
