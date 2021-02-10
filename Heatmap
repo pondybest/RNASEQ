@@ -1,0 +1,99 @@
+### Basic R commends #########
+setwd('E:\\OneDrive - purdue.edu\\Research Data\\6. LAP HSP60 Immunity\\Figure.3_RNA seq\\Data\\Analysis\\011321\\03.DiffExpress') # alwalys use 2 '\', not /, for every sub-folder
+getwd()
+install.packages("readxl") #install package to read xlsx and xls files directly
+library("readxl")    
+
+###  install Bioconductor ################
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install()
+BiocManager::available()   # available packages in Bioconductor
+
+### install packages in Bioconductor ##############
+BiocManager::install("biomaRt")
+BiocManager::install("pheatmap")
+BiocManager::install("RUVcorr")
+BiocManager::install("tidyverse")
+BiocManager::install("dplyr")
+BiocManager::install("gplots")
+BiocManager::install("d3heatmap") # not compatiable with current verison of R
+
+
+
+### Biotrainee Correlation ##############
+
+rm(list = ls())
+options(stringsAsFactors = F)
+file=('MT vs WT for Heatmap.txt')
+a=read.table(file, header = T, fill = T)
+a=as.data.frame.numeric(a)
+aa=as.data.frame.matrix(a)      # turn data frame into matrix 
+
+aa1=subset(aa, select=-c(Group,Gene_name))  # drop 'group' and 'gene_name' Method I 
+cor_aa1=cor(aa1)
+corrplot(cor_aa1)
+
+aa2 <- aa[,!(names(aa) %in% c('Gene_name','Group' ))]  # drop 'group' and 'gene_name' Method II:for name() '!'for dropping, without '!'is keeping
+cor_aa2 = cor(aa2)
+corrplot(cor_aa2)
+
+
+### Heatmap  ##########
+BiocManager::install("tidyverse")
+library(tibble)
+BiocManager::install("dplyr")
+library(dplyr)
+BiocManager::install("gplots")
+library('gplots')
+install.packages("d3heatmap")
+library('d3heatmap')
+
+
+rm(list = ls())
+options(stringsAsFactors = F)
+file=('MT vs WT for Heatmap.txt')
+a=read.table(file, header = T, fill = T)
+a=as.data.frame.matrix(a)
+a=subset(a, select=-c(Group))
+row.names(a)=NULL
+remove_rownames(a)%>% has_rownames()
+a=column_to_rownames(a, var = 'Gene_name')
+is.numeric(a)
+ncol(a)
+a_s=scale(a)  # Z scaling, each column is one variable, each row is one replicate. 
+
+
+# color scheme ####
+library("RColorBrewer")
+col = colorRampPalette(brewer.pal(10, "RdYlBu"))(256)
+
+# pheatmap ########
+tiff('WTvsMT_pheatmap.tiff', width = 800, height = 800)
+pheatmap(a_s, scale = "none", col = bluered(100))
+dev.off()
+
+# heatmap ########
+tiff('WTvsMT_heatmap.tiff', width = 800, height = 800)
+heatmap(a_s, scale = "none", col = bluered(100))
+dev.off()
+
+# heatmap2 ######
+tiff('WTvsMT_heatmap2.tiff', width = 800, height = 800)
+heatmap.2(a_s, scale = "none", col = bluered(100), trace = 'none', density.info = 'none')
+dev.off()
+
+# interactive heat maps ######
+tiff('WTvsMT_heatmap2.tiff', width = 800, height = 800)
+d3heatmap(a_s, scale = "none", colors = bluered(100))
+dev.off()
+
+
+
+
+
+
+
+
+
+
