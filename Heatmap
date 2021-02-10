@@ -1,5 +1,7 @@
 ### Basic R commends #########
-setwd('E:\\OneDrive - purdue.edu\\Research Data\\6. LAP HSP60 Immunity\\Figure.3_RNA seq\\Data\\Analysis\\011321\\03.DiffExpress') # alwalys use 2 '\', not /, for every sub-folder
+setwd('C:\\Users\\danie\\OneDrive - purdue.edu\\Research Data\\6. LAP HSP60 Immunity\\Figure.3_RNA seq\\Data\\Analysis\\011321\\03.DiffExpress')  #Laptop location 
+setwd('E:\\OneDrive - purdue.edu\\Research Data\\6. LAP HSP60 Immunity\\Figure.3_RNA seq\\Data\\Analysis\\011321\\03.DiffExpress')  #PC location 
+# alwalys use 2 '\', not /, for every sub-folder
 getwd()
 install.packages("readxl") #install package to read xlsx and xls files directly
 library("readxl")    
