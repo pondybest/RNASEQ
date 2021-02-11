@@ -64,16 +64,15 @@ library('d3heatmap')
 
 rm(list = ls())
 options(stringsAsFactors = F)
-file=('MT vs WT for Heatmap.txt')
+file=('C vs LAP1 vs LAP10 for Heatmap.txt')
 a=read.table(file, header = T, fill = T)
 a=as.data.frame.matrix(a)
-a=subset(a, select=-c(Group))
 row.names(a)=NULL
 remove_rownames(a)%>% has_rownames()
 a=column_to_rownames(a, var = 'Gene_name')
 is.numeric(a)
-ncol(a)
-a_s=scale(a)  # Z scaling, each column is one variable, each row is one replicate. 
+a_s=scale(t(a))   # Z scaling, each column is one variable, each row is one replicate. Use t()to transpose the matrix
+ta_s=t(a_s)
 
 
 # color scheme ####
@@ -98,20 +97,21 @@ tiff('WTvsMT_heatmap2.tiff',
      height = 6*300, 
      res = 300, 
      pointsize = 6) # font size
-# main figure
+
 heatmap.2(
-  a_s_transposed, 
+  ta_s, 
   scale = "none", 
-  main = "Caco-2 Genes Expression Profile upon Listeria infection",
+  main = "Caco-2 Genes Expression Profile upon LAP Treatment",
   labRow = ,
   labCol = ,
-  cexRow = 1.0,
+  cexRow = 0.2,
   cexCol = 2.0,
+  srtCol = 45,
   xlab = ,
   ylab = ,
   lwid = c(2.5,6),
-  lhei = c(1,8),
-  margins = c(8,8),
+  lhei = c(1,7),
+  margins = c(7,9),
   
   col = bluered(100), 
   ColSideColors = ,
@@ -143,6 +143,7 @@ legend('topright',
        lty= 1,             # line style
        lwd = 10            # line width
 )
+
 
 
 
